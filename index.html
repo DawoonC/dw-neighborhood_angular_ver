@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html ng-app="map">
+  <head>
+    <meta charset="utf-8"> <!-- use utf-8 for display -->
+    <meta http-equiv="X-UA-Comatible" content="IE=edge"> <!-- make IE use best engine -->
+    <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- for mobile view -->
+    <title>DW Neighborhood</title>
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places"></script>
+    <script type="text/javascript" src="js/angular.min.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+  </head>
+
+  <body ng-controller="MapController">
+    <div id="map"></div>
+
+    <div class="settings">
+      <div ng-show="settingsBoolean" class="settings-container">
+        <div class="settings-box">
+          <h4 class="settings-title">Current Neighborhood:</h4>
+          <form ng-submit="updateNeighborhood()">
+            <input ng-model="neighborhood" class="settings-area">
+          </form>
+        </div>
+        <div class="pointy"></div>
+      </div>
+      <button ng-click="settingsToggle()" class="settings-icon"></button>
+    </div>
+
+    <div class="search-bar">
+      <input ng-model="keyword" class="search-area" placeholder="search for popular places">
+      <button class="search-button"></button>
+    </div>
+
+    <div id="infolistBox">
+      <div class="list-title" ng-click="listToggle()"><img src="images/ic_place_grey600_18dp.png"><h2>Popular Places</h2></div>
+      <div ng-show="listBoolean">
+        <ul class="infolist">
+          <li ng-repeat="filteredVenue in filteredList" ng-click="clickMarker(filteredVenue)">
+            <hr>
+            <p><span class="v-name">{{filteredVenue.venue.name}}</span></p>
+            <p class="v-category">{{filteredVenue.venue.categories[0].name}}</p>
+            <p class="v-address">{{filteredVenue.venue.location.formattedAddress}}</p>
+            <p class="v-contact">{{filteredVenue.venue.contact.formattedPhone}}</p>
+            <p>
+              <strong>Tips: </strong>
+              <span ng-show="filteredVenue.tips">
+                {{filteredVenue.tips[0].text}}
+              </span>
+              <span ng-hide="filteredVenue.tips">
+                <em>no tips available.</em>
+              </span>
+            </p>
+          </li>
+        </ul>
+        <span class="no-result" ng-hide="filteredList.length">No Result Found</span>
+      </div>
+    </div>
+  </body>
+</html>
